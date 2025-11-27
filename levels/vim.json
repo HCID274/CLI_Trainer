@@ -2,7 +2,7 @@
   {
     "id": "vim_save_quit",
     "category": "vim_normal",
-    "topic": "basic",
+    "topic": "write",
     "difficulty": "easy",
     "title": "保存并退出",
     "prompt": "请使用 Vim 普通模式命令保存并退出。",
@@ -19,5 +19,266 @@
     ],
     "hint": "写入并退出的常用组合是 :wq。",
     "explanation": ":wq 写入文件并退出，ZZ 也可以达到同样效果。"
+  },
+  {
+    "id": "vim_quit_force",
+    "category": "vim_normal",
+    "topic": "quit",
+    "difficulty": "easy",
+    "title": "不保存强制退出",
+    "prompt": "直接丢弃修改并退出。",
+    "description": "练习强制退出命令。",
+    "tags": ["vim", "quit"],
+    "valid_answers": ["^:q!$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^:q!$": "已丢弃修改并退出 Vim。"
+    },
+    "anti_patterns": [
+      { "pattern": "^:q$", "hint": "有修改时 :q 会失败，需要 :q! 强制退出。" }
+    ],
+    "hint": "使用 :q! 丢弃修改。",
+    "explanation": ":q! 强制退出，不会写入缓冲区的修改。"
+  },
+  {
+    "id": "vim_write_only",
+    "category": "vim_normal",
+    "topic": "write",
+    "difficulty": "easy",
+    "title": "只保存不退出",
+    "prompt": "保存当前缓冲区但保持留在 Vim 中。",
+    "description": "练习 :w 写入文件。",
+    "tags": ["vim", "write"],
+    "valid_answers": ["^:w$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^:w$": "已写入文件。"
+    },
+    "anti_patterns": [
+      { "pattern": "^:wq$", "hint": "题目不需要退出，仅保存即可。" }
+    ],
+    "hint": ":w 写入文件但不退出。",
+    "explanation": ":w 把缓冲区内容写入文件，仍停留在当前缓冲区。"
+  },
+  {
+    "id": "vim_undo",
+    "category": "vim_normal",
+    "topic": "edit",
+    "difficulty": "easy",
+    "title": "撤销上一步",
+    "prompt": "在普通模式撤销最近的修改。",
+    "description": "练习撤销命令。",
+    "tags": ["vim", "undo"],
+    "valid_answers": ["^u$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^u$": "已撤销上一步操作。"
+    },
+    "anti_patterns": [
+      { "pattern": "^Ctrl\\+Z$", "hint": "在 Vim 中使用 u 撤销，而不是终端的 Ctrl+Z 挂起进程。" }
+    ],
+    "hint": "普通模式按 u 撤销。",
+    "explanation": "u 会回退一次修改；可连续使用多次撤销。"
+  },
+  {
+    "id": "vim_redo",
+    "category": "vim_normal",
+    "topic": "edit",
+    "difficulty": "medium",
+    "title": "重做被撤销的修改",
+    "prompt": "恢复刚才撤销掉的修改。",
+    "description": "练习重做命令。",
+    "tags": ["vim", "redo"],
+    "valid_answers": ["^<C-r>$", "^:redo$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^<C-r>$": "已重做操作。",
+      "^:redo$": "已重做操作。"
+    },
+    "anti_patterns": [
+      { "pattern": "^r$", "hint": "r 是替换单个字符，重做请用 <C-r> 或 :redo。" }
+    ],
+    "hint": "普通模式使用 Ctrl+R（<C-r>），或命令 :redo。",
+    "explanation": "重做可以恢复最近被撤销的修改。"
+  },
+  {
+    "id": "vim_insert_line_start",
+    "category": "vim_normal",
+    "topic": "insert",
+    "difficulty": "easy",
+    "title": "行首插入",
+    "prompt": "在当前行行首进入插入模式。",
+    "description": "练习 I 命令。",
+    "tags": ["vim", "insert"],
+    "valid_answers": ["^I$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^I$": "已在行首进入插入模式。"
+    },
+    "anti_patterns": [
+      { "pattern": "^i$", "hint": "i 在当前位置插入，行首插入用 I。" }
+    ],
+    "hint": "按 I 回到行首并进入插入模式。",
+    "explanation": "I 会移动到行首第一个非空白处并进入插入模式。"
+  },
+  {
+    "id": "vim_append_line_end",
+    "category": "vim_normal",
+    "topic": "insert",
+    "difficulty": "easy",
+    "title": "行尾追加",
+    "prompt": "在当前行行尾进入插入模式以追加文本。",
+    "description": "练习 A 命令。",
+    "tags": ["vim", "append"],
+    "valid_answers": ["^A$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^A$": "已在行尾进入插入模式。"
+    },
+    "anti_patterns": [
+      { "pattern": "^a$", "hint": "a 在光标后插入，行尾插入用 A。" }
+    ],
+    "hint": "按 A 跳到行尾并进入插入模式。",
+    "explanation": "A 会移动到行尾并切换到插入模式，适合追加文字。"
+  },
+  {
+    "id": "vim_delete_line",
+    "category": "vim_normal",
+    "topic": "edit",
+    "difficulty": "easy",
+    "title": "删除当前行",
+    "prompt": "删除光标所在的整行。",
+    "description": "练习 dd 删除行。",
+    "tags": ["vim", "delete"],
+    "valid_answers": ["^dd$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^dd$": "已删除当前行并保存到寄存器。"
+    },
+    "anti_patterns": [
+      { "pattern": "^D$", "hint": "D 只删除到行尾，整行删除用 dd。" }
+    ],
+    "hint": "dd 删除整行。",
+    "explanation": "dd 会删除整行，并将其内容存入默认寄存器，可用于后续粘贴。"
+  },
+  {
+    "id": "vim_copy_paste_line",
+    "category": "vim_normal",
+    "topic": "edit",
+    "difficulty": "medium",
+    "title": "复制并粘贴当前行",
+    "prompt": "复制当前行并在下一行粘贴一份。",
+    "description": "练习 yyp 快速复制一行。",
+    "tags": ["vim", "yank", "paste"],
+    "valid_answers": ["^yyp$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^yyp$": "已复制并粘贴当前行。"
+    },
+    "anti_patterns": [
+      { "pattern": "^yy$", "hint": "yy 只复制，需再加 p 粘贴到下一行。" }
+    ],
+    "hint": "普通模式下输入 yyp。",
+    "explanation": "yy 复制整行，p 在下一行粘贴，实现快速复制当前行。"
+  },
+  {
+    "id": "vim_search_word",
+    "category": "vim_normal",
+    "topic": "search",
+    "difficulty": "medium",
+    "title": "向下搜索单词",
+    "prompt": "向下搜索单词 error。",
+    "description": "练习 / 开头的前向搜索。",
+    "tags": ["vim", "search"],
+    "valid_answers": ["^/error$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^/error$": "已向下搜索 error，高亮并跳转到下一个匹配。"
+    },
+    "anti_patterns": [
+      { "pattern": "^\\?$", "hint": "问号 ? 用于向上搜索，这里需要向下搜索，使用 /。" }
+    ],
+    "hint": "按 / 输入关键字并回车，例如 /error。",
+    "explanation": "/ 开头执行向下搜索，回车后跳转到下一个匹配。"
+  },
+  {
+    "id": "vim_replace_all",
+    "category": "vim_normal",
+    "topic": "search_replace",
+    "difficulty": "hard",
+    "title": "全局替换",
+    "prompt": "在整个文件中把 foo 全部替换为 bar。",
+    "description": "练习 :%s 进行全局替换。",
+    "tags": ["vim", "substitute"],
+    "valid_answers": ["^:%s/foo/bar/g$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^:%s/foo/bar/g$": "已全局替换 foo -> bar。"
+    },
+    "anti_patterns": [
+      { "pattern": "^:s/foo/bar/$", "hint": "缺少前缀 % 会只替换当前行，全局替换用 :%s ... /g。" }
+    ],
+    "hint": "使用 :%s/foo/bar/g。",
+    "explanation": ":%s 作用于全文件，/g 让每行的所有匹配都被替换。"
+  },
+  {
+    "id": "vim_visual_line",
+    "category": "vim_normal",
+    "topic": "visual",
+    "difficulty": "easy",
+    "title": "行可视选择",
+    "prompt": "选中当前整行进入可视行模式。",
+    "description": "练习 V 进入行可视模式。",
+    "tags": ["vim", "visual"],
+    "valid_answers": ["^V$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^V$": "进入行可视模式，当前行被选中。"
+    },
+    "anti_patterns": [
+      { "pattern": "^v$", "hint": "v 是字符可视模式，整行选择用大写 V。" }
+    ],
+    "hint": "按大写 V。",
+    "explanation": "V 会选中整行并进入行可视模式，便于对多行操作。"
+  },
+  {
+    "id": "vim_jump_top",
+    "category": "vim_normal",
+    "topic": "movement",
+    "difficulty": "easy",
+    "title": "跳到文件开头",
+    "prompt": "快速移动到文件第一行。",
+    "description": "练习 gg 跳转。",
+    "tags": ["vim", "movement"],
+    "valid_answers": ["^gg$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^gg$": "已跳转到第一行。"
+    },
+    "anti_patterns": [
+      { "pattern": "^G$", "hint": "G 跳到末尾，跳到开头用 gg。" }
+    ],
+    "hint": "在普通模式输入 gg。",
+    "explanation": "gg 将光标移动到文件第一行行首。"
+  },
+  {
+    "id": "vim_jump_bottom",
+    "category": "vim_normal",
+    "topic": "movement",
+    "difficulty": "easy",
+    "title": "跳到文件末尾",
+    "prompt": "快速移动到文件最后一行。",
+    "description": "练习 G 跳转。",
+    "tags": ["vim", "movement"],
+    "valid_answers": ["^G$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^G$": "已跳转到最后一行。"
+    },
+    "anti_patterns": [
+      { "pattern": "^gg$", "hint": "gg 跳到开头，跳到末尾用 G。" }
+    ],
+    "hint": "按大写 G 跳转到最后一行。",
+    "explanation": "G 将光标移动到文件最后一行行首。"
   }
 ]

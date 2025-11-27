@@ -11,7 +11,7 @@
     "valid_answers": ["^dir$", "^dir\\s+/b$"],
     "case_sensitive": false,
     "outputs": {
-      "^dir$": " 驱动器 C 中的卷是 OS\n 卷的序列号是 1234-ABCD\n\n C:\\Users\\Admin 的目录\n\n2024/06/01  10:00    <DIR>          .\n2024/06/01  10:00    <DIR>          ..\n2024/06/01  10:00               120 README.md\n2024/06/01  10:00             2,048 app.py\n2024/06/01  10:00    <DIR>          data\n2024/06/01  10:00    <DIR>          logs\n               2 个文件          2,168 字节\n               4 个目录  100,000,000,000 可用字节",
+      "^dir$": " 驱动器 C 中的卷是 OS\n 卷的序列号是 1234-ABCD\n\n C:\\\\Users\\\\Admin 的目录\n\n2024/06/01  10:00    <DIR>          .\n2024/06/01  10:00    <DIR>          ..\n2024/06/01  10:00               120 README.md\n2024/06/01  10:00             2,048 app.py\n2024/06/01  10:00    <DIR>          data\n2024/06/01  10:00    <DIR>          logs\n               2 个文件          2,168 字节\n               4 个目录  100,000,000,000 可用字节",
       "^dir\\s+/b$": "README.md\napp.py\ndata\nlogs"
     },
     "anti_patterns": [
@@ -19,5 +19,249 @@
     ],
     "hint": "dir 命令用于查看目录内容。",
     "explanation": "dir 会列出当前目录文件，/b 显示简洁列表。"
+  },
+  {
+    "id": "windows_cd_parent",
+    "category": "windows_cmd",
+    "topic": "navigation",
+    "difficulty": "easy",
+    "title": "返回上一级目录",
+    "prompt": "返回到上一级目录。",
+    "description": "练习在 CMD 中向上导航。",
+    "tags": ["cd", "navigation"],
+    "valid_answers": ["^cd\\s+\\.\\.$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^cd\\s+\\.\\.$": "C:\\\\Users"
+    },
+    "anti_patterns": [
+      { "pattern": "^cd\\s+/", "hint": "Windows 使用 \\\\ 作为分隔符，返回上级用 cd .. 即可。" }
+    ],
+    "hint": "使用 cd .. 回到上一级。",
+    "explanation": "cd .. 切换到当前路径的父目录。"
+  },
+  {
+    "id": "windows_mkdir_logs",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "创建目录",
+    "prompt": "创建一个名为 logs 的目录。",
+    "description": "练习使用 mkdir/md 创建目录。",
+    "tags": ["mkdir", "md"],
+    "valid_answers": ["^mkdir\\s+logs$", "^md\\s+logs$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^mkdir\\s+logs$": "",
+      "^md\\s+logs$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^touch\\b", "hint": "touch 是类 Unix 命令，Windows 下用 mkdir 或 md。" }
+    ],
+    "hint": "mkdir logs 或 md logs。",
+    "explanation": "mkdir/md 都可在 CMD 中创建目录。"
+  },
+  {
+    "id": "windows_type_file",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "查看文件内容",
+    "prompt": "查看 README.md 的内容。",
+    "description": "练习使用 type 输出文件内容。",
+    "tags": ["type", "read"],
+    "valid_answers": ["^type\\s+README\\.md$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^type\\s+README\\.md$": "# 项目说明\n这是示例项目的 README 内容。"
+    },
+    "anti_patterns": [
+      { "pattern": "^cat\\b", "hint": "Windows CMD 用 type 查看文件，而不是 cat。" }
+    ],
+    "hint": "使用 type README.md。",
+    "explanation": "type 会把文本文件内容输出到终端。"
+  },
+  {
+    "id": "windows_copy_config",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "复制文件",
+    "prompt": "把 config.example.json 复制为 config.json。",
+    "description": "练习使用 copy 复制文件。",
+    "tags": ["copy", "filesystem"],
+    "valid_answers": ["^copy\\s+config\\.example\\.json\\s+config\\.json$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^copy\\s+config\\.example\\.json\\s+config\\.json$": "        1 个文件被复制。"
+    },
+    "anti_patterns": [
+      { "pattern": "^cp\\b", "hint": "在 CMD 中使用 copy，而不是 cp。" }
+    ],
+    "hint": "copy 源 目标。",
+    "explanation": "copy 可以复制文件，保持原文件不变。"
+  },
+  {
+    "id": "windows_move_file",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "medium",
+    "title": "移动文件",
+    "prompt": "把 build\\app.exe 移动到 release\\app.exe。",
+    "description": "练习使用 move 移动/重命名文件。",
+    "tags": ["move", "rename"],
+    "valid_answers": ["^move\\s+build\\\\app\\.exe\\s+release\\\\app\\.exe$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^move\\s+build\\\\app\\.exe\\s+release\\\\app\\.exe$": "        1 个文件被移动。"
+    },
+    "anti_patterns": [
+      { "pattern": "^mv\\b", "hint": "使用 Windows 的 move，而不是 mv。" }
+    ],
+    "hint": "move <源> <目标>。",
+    "explanation": "move 同时支持移动和重命名文件或目录。"
+  },
+  {
+    "id": "windows_del_file",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "删除文件",
+    "prompt": "删除 temp.log 文件，必要时强制删除。",
+    "description": "练习 del 删除文件。",
+    "tags": ["del", "delete"],
+    "valid_answers": ["^del\\s+temp\\.log$", "^del\\s+/f\\s+temp\\.log$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^del\\s+temp\\.log$": "",
+      "^del\\s+/f\\s+temp\\.log$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^rm\\b", "hint": "rm 是类 Unix 命令，CMD 请用 del。" }
+    ],
+    "hint": "del temp.log，如被占用可加 /f。",
+    "explanation": "del 用于删除文件，/f 可以强制删除只读文件。"
+  },
+  {
+    "id": "windows_findstr_error",
+    "category": "windows_cmd",
+    "topic": "search",
+    "difficulty": "medium",
+    "title": "搜索日志关键字",
+    "prompt": "在 app.log 中查找包含 ERROR 的行并显示行号。",
+    "description": "练习 findstr 带行号搜索。",
+    "tags": ["findstr", "search"],
+    "valid_answers": ["^findstr\\s+/n\\s+ERROR\\s+app\\.log$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^findstr\\s+/n\\s+ERROR\\s+app\\.log$": "12:ERROR failed to connect\n45:ERROR timeout when calling service"
+    },
+    "anti_patterns": [
+      { "pattern": "^findstr\\s+ERROR\\s+app\\.log$", "hint": "加上 /n 可以显示行号，便于定位。" }
+    ],
+    "hint": "findstr /n 关键字 文件。",
+    "explanation": "/n 让 findstr 输出行号。"
+  },
+  {
+    "id": "windows_tasklist",
+    "category": "windows_cmd",
+    "topic": "process",
+    "difficulty": "medium",
+    "title": "查看进程列表",
+    "prompt": "查看当前正在运行的进程列表。",
+    "description": "练习 tasklist 查看进程。",
+    "tags": ["tasklist", "process"],
+    "valid_answers": ["^tasklist$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^tasklist$": "映像名称                       PID 会话名          会话#     内存使用\n========================= ======== ================ =========== ============\nSystem Idle Process              0 Services                   0         24 K\nSystem                           4 Services                   0        260 K\ndemo.exe                      4321 Console                    1     12,000 K"
+    },
+    "anti_patterns": [
+      { "pattern": "^ps\\b", "hint": "在 CMD 中使用 tasklist，而不是 ps。" }
+    ],
+    "hint": "tasklist。",
+    "explanation": "tasklist 会列出本机进程及内存占用。"
+  },
+  {
+    "id": "windows_taskkill_pid",
+    "category": "windows_cmd",
+    "topic": "process",
+    "difficulty": "medium",
+    "title": "终止指定进程",
+    "prompt": "结束 PID 为 4321 的进程，必要时强制关闭。",
+    "description": "练习 taskkill 按 PID 结束进程。",
+    "tags": ["taskkill", "process"],
+    "valid_answers": ["^taskkill\\s+/PID\\s+4321\\s+/F$", "^taskkill\\s+/F\\s+/PID\\s+4321$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^taskkill\\s+/PID\\s+4321\\s+/F$": "成功: 已终止 PID 为 4321 的进程。",
+      "^taskkill\\s+/F\\s+/PID\\s+4321$": "成功: 已终止 PID 为 4321 的进程。"
+    },
+    "anti_patterns": [
+      { "pattern": "^kill\\b", "hint": "kill 是类 Unix 命令，CMD 用 taskkill。" }
+    ],
+    "hint": "taskkill /PID 4321 /F。",
+    "explanation": "taskkill 可以按 PID 结束进程，/F 为强制结束。"
+  },
+  {
+    "id": "windows_set_env",
+    "category": "windows_cmd",
+    "topic": "environment",
+    "difficulty": "easy",
+    "title": "设置环境变量",
+    "prompt": "将环境变量 NODE_ENV 设置为 production（当前会话）。",
+    "description": "练习 set 设置环境变量。",
+    "tags": ["set", "env"],
+    "valid_answers": ["^set\\s+NODE_ENV=production$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^set\\s+NODE_ENV=production$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^export\\b", "hint": "export 是类 Unix 用法，CMD 中使用 set。" }
+    ],
+    "hint": "set NAME=value。",
+    "explanation": "set 会在当前会话设置变量，立即生效。"
+  },
+  {
+    "id": "windows_ipconfig",
+    "category": "windows_cmd",
+    "topic": "network",
+    "difficulty": "easy",
+    "title": "查看网络配置",
+    "prompt": "查看本机网络适配器的 IP 配置。",
+    "description": "练习 ipconfig 查看网络信息。",
+    "tags": ["ipconfig", "network"],
+    "valid_answers": ["^ipconfig$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^ipconfig$": "Windows IP 配置\n\n以太网适配器 以太网:\n   连接特定的 DNS 后缀 . . . . . . . :\n   IPv4 地址  . . . . . . . . . . . . : 192.168.1.10\n   子网掩码  . . . . . . . . . . . . : 255.255.255.0\n   默认网关. . . . . . . . . . . . . : 192.168.1.1"
+    },
+    "anti_patterns": [
+      { "pattern": "^ifconfig\\b", "hint": "Windows CMD 使用 ipconfig，而不是 ifconfig。" }
+    ],
+    "hint": "ipconfig。",
+    "explanation": "ipconfig 会展示各网络适配器的 IP、网关等信息。"
+  },
+  {
+    "id": "windows_rmdir_build",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "hard",
+    "title": "删除目录及其内容",
+    "prompt": "删除 build 目录及其所有子项，无需确认。",
+    "description": "练习 rmdir /s /q 递归删除目录。",
+    "tags": ["rmdir", "delete"],
+    "valid_answers": ["^rmdir\\s+/s\\s+/q\\s+build$", "^rd\\s+/s\\s+/q\\s+build$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^rmdir\\s+/s\\s+/q\\s+build$": "",
+      "^rd\\s+/s\\s+/q\\s+build$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^del\\s+build$", "hint": "del 无法删除目录，需要用 rmdir/rd 并带 /s /q。" }
+    ],
+    "hint": "rmdir /s /q build。",
+    "explanation": "/s 递归删除子项，/q 静默模式无需确认。"
   }
 ]

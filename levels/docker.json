@@ -19,5 +19,239 @@
     ],
     "hint": "docker images 可以查看本地镜像。",
     "explanation": "docker images 会显示镜像仓库、标签、ID 等信息。"
+  },
+  {
+    "id": "docker_list_containers",
+    "category": "docker",
+    "topic": "container",
+    "difficulty": "easy",
+    "title": "查看容器（包含已退出）",
+    "prompt": "列出所有容器（包含已停止的）。",
+    "description": "练习 docker ps -a 查看全部容器。",
+    "tags": ["docker", "ps"],
+    "valid_answers": ["^docker\\s+ps\\s+-a$", "^docker\\s+container\\s+ls\\s+-a$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+ps\\s+-a$": "CONTAINER ID   IMAGE       COMMAND                  CREATED       STATUS                     PORTS     NAMES\n12ab34cd56ef   nginx       \"nginx -g 'daemon off'\"  3 hours ago   Exited (0) 10 minutes ago             web\n78cd90ef12ab   redis:7     \"docker-entrypoint.s\"    1 day ago     Up 3 hours                 6379/tcp   cache",
+      "^docker\\s+container\\s+ls\\s+-a$": "CONTAINER ID   IMAGE       COMMAND                  CREATED       STATUS                     PORTS     NAMES\n12ab34cd56ef   nginx       \"nginx -g 'daemon off'\"  3 hours ago   Exited (0) 10 minutes ago             web\n78cd90ef12ab   redis:7     \"docker-entrypoint.s\"    1 day ago     Up 3 hours                 6379/tcp   cache"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+ps$", "hint": "docker ps 默认只看运行中的容器，加上 -a 才包含已退出的。" }
+    ],
+    "hint": "docker ps -a。",
+    "explanation": "ps -a 会列出所有状态的容器，便于排查。"
+  },
+  {
+    "id": "docker_run_nginx_detached",
+    "category": "docker",
+    "topic": "run",
+    "difficulty": "easy",
+    "title": "后台运行容器并映射端口",
+    "prompt": "以后台模式运行一个名为 web 的 nginx 容器，映射 80:80。",
+    "description": "练习 docker run -d --name -p。",
+    "tags": ["docker", "run", "port"],
+    "valid_answers": [
+      "^docker\\s+run\\s+-d\\s+--name\\s+web\\s+-p\\s+80:80\\s+nginx$",
+      "^docker\\s+run\\s+--name\\s+web\\s+-p\\s+80:80\\s+-d\\s+nginx$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+run\\s+-d\\s+--name\\s+web\\s+-p\\s+80:80\\s+nginx$": "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+      "^docker\\s+run\\s+--name\\s+web\\s+-p\\s+80:80\\s+-d\\s+nginx$": "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+run\\s+nginx$", "hint": "需要后台运行、命名并映射端口，补充 -d --name -p 参数。" }
+    ],
+    "hint": "docker run -d --name web -p 80:80 nginx。",
+    "explanation": "-d 后台运行，--name 指定容器名，-p 映射端口。"
+  },
+  {
+    "id": "docker_stop_container",
+    "category": "docker",
+    "topic": "container",
+    "difficulty": "easy",
+    "title": "停止容器",
+    "prompt": "停止名为 web 的容器。",
+    "description": "练习 docker stop 停止容器。",
+    "tags": ["docker", "stop"],
+    "valid_answers": ["^docker\\s+stop\\s+web$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+stop\\s+web$": "web"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+kill\\s+web$", "hint": "kill 会直接发送 SIGKILL，先尝试优雅的 stop。" }
+    ],
+    "hint": "docker stop web。",
+    "explanation": "stop 会发送 SIGTERM，等待优雅退出后再 SIGKILL。"
+  },
+  {
+    "id": "docker_rm_container",
+    "category": "docker",
+    "topic": "container",
+    "difficulty": "easy",
+    "title": "删除已停止的容器",
+    "prompt": "删除名为 web 的已停止容器。",
+    "description": "练习 docker rm 删除容器。",
+    "tags": ["docker", "rm"],
+    "valid_answers": ["^docker\\s+rm\\s+web$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+rm\\s+web$": "web"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+rmi\\s+web$", "hint": "rmi 是删除镜像，这里需要删除容器，用 rm。" }
+    ],
+    "hint": "docker rm web。",
+    "explanation": "删除容器前需确保容器已停止。"
+  },
+  {
+    "id": "docker_logs_follow",
+    "category": "docker",
+    "topic": "logs",
+    "difficulty": "medium",
+    "title": "查看并跟随容器日志",
+    "prompt": "查看 web 容器最新 50 行日志并持续跟随。",
+    "description": "练习 docker logs --tail --follow。",
+    "tags": ["docker", "logs"],
+    "valid_answers": [
+      "^docker\\s+logs\\s+--tail\\s+50\\s+-f\\s+web$",
+      "^docker\\s+logs\\s+-f\\s+--tail\\s+50\\s+web$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+logs\\s+--tail\\s+50\\s+-f\\s+web$": "info server started\ninfo listening on :80\n...",
+      "^docker\\s+logs\\s+-f\\s+--tail\\s+50\\s+web$": "info server started\ninfo listening on :80\n..."
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+logs\\s+web$", "hint": "需要指定尾部行数并跟随输出，补充 --tail 50 -f。" }
+    ],
+    "hint": "docker logs --tail 50 -f web。",
+    "explanation": "--tail 限制行数，-f 持续跟随输出。"
+  },
+  {
+    "id": "docker_exec_shell",
+    "category": "docker",
+    "topic": "container",
+    "difficulty": "medium",
+    "title": "进入容器交互终端",
+    "prompt": "在运行中的 web 容器里开启交互式 bash。",
+    "description": "练习 docker exec -it 进入容器。",
+    "tags": ["docker", "exec", "shell"],
+    "valid_answers": [
+      "^docker\\s+exec\\s+-it\\s+web\\s+/bin/bash$",
+      "^docker\\s+exec\\s+-it\\s+web\\s+/bin/sh$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+exec\\s+-it\\s+web\\s+/bin/bash$": "root@12ab34cd56ef:/app# ",
+      "^docker\\s+exec\\s+-it\\s+web\\s+/bin/sh$": "root@12ab34cd56ef:/app# "
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+attach\\s+web$", "hint": "attach 直接附着主进程，推荐 exec 新建终端。" }
+    ],
+    "hint": "docker exec -it web /bin/bash。",
+    "explanation": "-i 保持标准输入，-t 分配伪终端。"
+  },
+  {
+    "id": "docker_build_image",
+    "category": "docker",
+    "topic": "image",
+    "difficulty": "medium",
+    "title": "构建镜像",
+    "prompt": "在当前目录根据 Dockerfile 构建镜像 demo-app:latest。",
+    "description": "练习 docker build -t。",
+    "tags": ["docker", "build"],
+    "valid_answers": ["^docker\\s+build\\s+-t\\s+demo-app:latest\\s+\\.$", "^docker\\s+build\\s+-t\\s+demo-app\\s+\\.$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+build\\s+-t\\s+demo-app:latest\\s+\\.$": "Sending build context to Docker daemon  12.3MB\nStep 1/6 : FROM python:3.11-slim\n...\nSuccessfully tagged demo-app:latest",
+      "^docker\\s+build\\s+-t\\s+demo-app\\s+\\.$": "Sending build context to Docker daemon  12.3MB\nStep 1/6 : FROM python:3.11-slim\n...\nSuccessfully tagged demo-app:latest"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+build\\s+\\.$", "hint": "记得使用 -t 指定镜像名称和标签，例如 demo-app:latest。" }
+    ],
+    "hint": "docker build -t demo-app:latest .",
+    "explanation": "-t 设置镜像名:标签，末尾的 . 指定构建上下文。"
+  },
+  {
+    "id": "docker_pull_image",
+    "category": "docker",
+    "topic": "image",
+    "difficulty": "easy",
+    "title": "拉取镜像",
+    "prompt": "从仓库拉取 redis:7 镜像。",
+    "description": "练习 docker pull。",
+    "tags": ["docker", "pull"],
+    "valid_answers": ["^docker\\s+pull\\s+redis:7$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+pull\\s+redis:7$": "7: Pulling from library/redis\nDigest: sha256:abc123...\nStatus: Downloaded newer image for redis:7\ndocker.io/library/redis:7"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+run\\s+redis:7$", "hint": "先拉取镜像，运行容器是下一步操作。" }
+    ],
+    "hint": "docker pull redis:7。",
+    "explanation": "pull 会从默认仓库拉取指定标签的镜像。"
+  },
+  {
+    "id": "docker_remove_image",
+    "category": "docker",
+    "topic": "image",
+    "difficulty": "medium",
+    "title": "删除镜像",
+    "prompt": "删除本地的 redis:7 镜像。",
+    "description": "练习 docker rmi 删除镜像。",
+    "tags": ["docker", "rmi"],
+    "valid_answers": ["^docker\\s+rmi\\s+redis:7$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+rmi\\s+redis:7$": "Untagged: redis:7\nDeleted: sha256:abc123..."
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+rm\\s+redis:7$", "hint": "rm 是删除容器，删除镜像用 rmi。" }
+    ],
+    "hint": "docker rmi redis:7。",
+    "explanation": "删除镜像前需确保没有容器在使用它。"
+  },
+  {
+    "id": "docker_inspect_container",
+    "category": "docker",
+    "topic": "inspect",
+    "difficulty": "medium",
+    "title": "查看容器详细信息",
+    "prompt": "查看 web 容器的详细配置（JSON）。",
+    "description": "练习 docker inspect。",
+    "tags": ["docker", "inspect"],
+    "valid_answers": ["^docker\\s+inspect\\s+web$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+inspect\\s+web$": "[\n  {\n    \"Id\": \"12ab34cd56ef...\",\n    \"Name\": \"/web\",\n    \"Config\": {\"Image\": \"nginx\"}\n  }\n]"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+ps", "hint": "ps 只能看到概览，inspect 才能查看详细 JSON。" }
+    ],
+    "hint": "docker inspect web。",
+    "explanation": "inspect 可查看容器/镜像的全部元数据。"
+  },
+  {
+    "id": "docker_system_prune",
+    "category": "docker",
+    "topic": "cleanup",
+    "difficulty": "hard",
+    "title": "清理无用数据",
+    "prompt": "清理无用的容器、网络、镜像缓存，跳过交互确认。",
+    "description": "练习 docker system prune -f。",
+    "tags": ["docker", "cleanup"],
+    "valid_answers": ["^docker\\s+system\\s+prune\\s+-f$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+system\\s+prune\\s+-f$": "Deleted Containers: 2\nDeleted Images: 3\nDeleted Build Cache: 0"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+system\\s+prune$", "hint": "默认会提示确认，加上 -f（或 --force）以跳过交互。" }
+    ],
+    "hint": "docker system prune -f。",
+    "explanation": "system prune 会清理未使用的对象，-f 直接执行无需确认。"
   }
 ]

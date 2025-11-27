@@ -6,7 +6,7 @@
 - `cli_trainer/levels_loader.py`: Resolves the level source (`--levels` override → local `levels/index.json` fallback), loads JSON, and validates shapes.
 - `cli_trainer/matcher.py` & `cli_trainer/models.py`: Regex matching logic and the `Level` data model; keep validation close to the model.
 - `cli_trainer/ui.py` & `cli_trainer/config.py`: Output styling, prompt symbols, and case-sensitivity defaults.
-- `levels/`: Built-in question sets with `index.json` registry plus category files (`linux.json`, `windows.json`, `docker.json`, `vim.json`). Prefer adding new sets via the index to keep ordering explicit.
+- `levels/`: Built-in question sets with `index.json` registry plus category files (`linux.json`, `windows.json`, `docker.json`, `vim.json`, `git.json`). Prefer adding new sets via the index to keep ordering explicit.
 
 ## Build, Test, and Development Commands
 ```bash
@@ -21,7 +21,7 @@ cli-trainer --no-color --levels levels/index.json --category linux_shell --diffi
 - Target Python 3.8+; use 4-space indents, type hints, and dataclasses where stateful structures are needed.
 - Keep functions `snake_case`, classes `PascalCase`, and module-level constants `UPPER_SNAKE`.
 - Use the helpers in `ui.py` for any user-facing output to keep coloring and tone consistent.
-- When extending level formats, mirror existing JSON keys and keep regexes anchored with `^...$` to avoid accidental matches.
+- When extending level formats, mirror existing JSON keys and keep regexes anchored with `^...$` to avoid accidental matches; add new categories to `config.DEFAULT_PROMPT_SYMBOLS` for consistent prompts.
 
 ## Testing Guidelines
 - Add new tests under `tests/` using `test_*.py` naming; structure fixtures around sample files in `levels/`.

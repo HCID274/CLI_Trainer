@@ -1,0 +1,318 @@
+[
+  {
+    "id": "git_status_short",
+    "category": "git",
+    "topic": "status",
+    "difficulty": "easy",
+    "title": "查看当前仓库状态",
+    "prompt": "请查看当前仓库的工作区与暂存区状态。",
+    "description": "快速了解哪些文件已修改、已暂存。",
+    "tags": ["git", "status"],
+    "valid_answers": ["^git\\s+status$", "^git\\s+status\\s+-sb$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+status$": "On branch main\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n\tmodified:   src/main.py\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")",
+      "^git\\s+status\\s+-sb$": "## main\n M src/main.py"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+log", "hint": "需要查看工作区状态，而不是提交历史。" }
+    ],
+    "hint": "使用 git status 或简洁的 git status -sb。",
+    "explanation": "git status 显示工作区和暂存区的差异，-sb 用简短格式呈现。"
+  },
+  {
+    "id": "git_add_file",
+    "category": "git",
+    "topic": "staging",
+    "difficulty": "easy",
+    "title": "将文件加入暂存区",
+    "prompt": "把修改过的 src/main.py 加入暂存区。",
+    "description": "练习把指定文件加入暂存区。",
+    "tags": ["git", "add", "staging"],
+    "valid_answers": ["^git\\s+add\\s+src/main\\.py$", "^git\\s+add\\s+\\.\\/src/main\\.py$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+add\\s+src/main\\.py$": "",
+      "^git\\s+add\\s+\\.\\/src/main\\.py$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+add\\s+\\.$", "hint": "题目只要求暂存 src/main.py，不需要全部文件。" }
+    ],
+    "hint": "git add <文件路径> 可以把指定文件放入暂存区。",
+    "explanation": "git add 会把工作区更改写入暂存区，为下一次提交做准备。"
+  },
+  {
+    "id": "git_commit_message",
+    "category": "git",
+    "topic": "commit",
+    "difficulty": "easy",
+    "title": "提交并写入提交信息",
+    "prompt": "提交当前暂存区的修改，提交信息使用 \"init project\"。",
+    "description": "练习带提交信息的提交命令。",
+    "tags": ["git", "commit"],
+    "valid_answers": [
+      "^git\\s+commit\\s+-m\\s+\"init\\s+project\"$",
+      "^git\\s+commit\\s+-m\\s+'init\\s+project'$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+commit\\s+-m\\s+\"init\\s+project\"$": "[main abc1234] init project\n 1 file changed, 10 insertions(+)",
+      "^git\\s+commit\\s+-m\\s+'init\\s+project'$": "[main abc1234] init project\n 1 file changed, 10 insertions(+)"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+commit\\s+--amend", "hint": "amend 会修改最近一次提交，这里需要新提交。" }
+    ],
+    "hint": "git commit -m \"消息\"，引号可用单引号或双引号。",
+    "explanation": "提交时附上清晰的 message，便于审阅历史。"
+  },
+  {
+    "id": "git_log_oneline_graph",
+    "category": "git",
+    "topic": "history",
+    "difficulty": "medium",
+    "title": "查看简洁历史",
+    "prompt": "以图形化单行形式查看提交历史。",
+    "description": "练习用图形和单行模式阅读历史。",
+    "tags": ["git", "log", "history"],
+    "valid_answers": [
+      "^git\\s+log\\s+--oneline\\s+--graph(\\s+--decorate)?$",
+      "^git\\s+log\\s+--graph\\s+--oneline(\\s+--decorate)?$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+log\\s+--oneline\\s+--graph(\\s+--decorate)?$": "* abc1234 (HEAD -> main) init project\n* 789def0 add README",
+      "^git\\s+log\\s+--graph\\s+--oneline(\\s+--decorate)?$": "* abc1234 (HEAD -> main) init project\n* 789def0 add README"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+log\\s*$", "hint": "需要图形 + 单行的精简视图，补充 --graph --oneline。" }
+    ],
+    "hint": "组合使用 --graph 与 --oneline，常配上 --decorate。",
+    "explanation": "--graph 用 ASCII 显示分支结构，--oneline 便于快速浏览。"
+  },
+  {
+    "id": "git_branch_create",
+    "category": "git",
+    "topic": "branching",
+    "difficulty": "easy",
+    "title": "新建并切换到分支",
+    "prompt": "创建并切换到 feature/login 分支。",
+    "description": "练习创建新分支并立即切换。",
+    "tags": ["git", "branch", "switch"],
+    "valid_answers": [
+      "^git\\s+switch\\s+-c\\s+feature/login$",
+      "^git\\s+checkout\\s+-b\\s+feature/login$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+switch\\s+-c\\s+feature/login$": "Switched to a new branch 'feature/login'",
+      "^git\\s+checkout\\s+-b\\s+feature/login$": "Switched to a new branch 'feature/login'"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+branch\\s+feature/login$", "hint": "git branch 只创建不切换，需要 switch/checkout 切换。"}
+    ],
+    "hint": "使用 git switch -c <name> 或 git checkout -b <name> 可以创建并切换。",
+    "explanation": "switch 是较新的分支切换命令，checkout -b 是等价的旧用法。"
+  },
+  {
+    "id": "git_switch_branch",
+    "category": "git",
+    "topic": "branching",
+    "difficulty": "easy",
+    "title": "切换回主分支",
+    "prompt": "当前在 feature/login，切换回 main 分支。",
+    "description": "练习分支之间的切换。",
+    "tags": ["git", "switch", "checkout"],
+    "valid_answers": ["^git\\s+switch\\s+main$", "^git\\s+checkout\\s+main$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+switch\\s+main$": "Switched to branch 'main'",
+      "^git\\s+checkout\\s+main$": "Switched to branch 'main'"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+merge\\s+main$", "hint": "这里只需要切换分支，不是合并。" }
+    ],
+    "hint": "git switch main 或 git checkout main 均可。",
+    "explanation": "切换分支会更新工作区到对应分支的快照。"
+  },
+  {
+    "id": "git_merge_branch",
+    "category": "git",
+    "topic": "merge",
+    "difficulty": "medium",
+    "title": "合并分支",
+    "prompt": "在 main 分支上，把 feature/login 分支合并进来。",
+    "description": "练习普通的合并操作。",
+    "tags": ["git", "merge"],
+    "valid_answers": ["^git\\s+merge\\s+feature/login$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+merge\\s+feature/login$": "Updating 789def0..abc1234\nFast-forward\n src/main.py | 5 +++++\n 1 file changed, 5 insertions(+)"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+rebase\\s+feature/login$", "hint": "rebase 会改写历史，这里需要直接合并。" }
+    ],
+    "hint": "保持在 main 分支，执行 git merge feature/login。",
+    "explanation": "merge 会创建合并提交或快进合并，视历史而定。"
+  },
+  {
+    "id": "git_remote_add_origin",
+    "category": "git",
+    "topic": "remote",
+    "difficulty": "easy",
+    "title": "配置远程仓库",
+    "prompt": "把远程仓库 https://example.com/demo.git 添加为 origin。",
+    "description": "练习添加远程并命名为 origin。",
+    "tags": ["git", "remote", "origin"],
+    "valid_answers": ["^git\\s+remote\\s+add\\s+origin\\s+https://example\\.com/demo\\.git$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+remote\\s+add\\s+origin\\s+https://example\\.com/demo\\.git$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+remote\\s+set-url", "hint": "set-url 是修改已有远程，这里需要新增远程。" }
+    ],
+    "hint": "git remote add <名称> <URL>。",
+    "explanation": "origin 是约定俗成的默认远程名称，便于 push/pull。"
+  },
+  {
+    "id": "git_pull_rebase",
+    "category": "git",
+    "topic": "remote",
+    "difficulty": "medium",
+    "title": "带 rebase 的拉取",
+    "prompt": "从 origin 的 main 分支拉取，并在本地使用 rebase 方式整合。",
+    "description": "练习常见的无合并提交拉取方式。",
+    "tags": ["git", "pull", "rebase"],
+    "valid_answers": [
+      "^git\\s+pull\\s+--rebase\\s+origin\\s+main$",
+      "^git\\s+pull\\s+origin\\s+main\\s+--rebase$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+pull\\s+--rebase\\s+origin\\s+main$": "From https://example.com/demo\n * branch            main       -> FETCH_HEAD\nFirst, rewinding head to replay your work on top of it...",
+      "^git\\s+pull\\s+origin\\s+main\\s+--rebase$": "From https://example.com/demo\n * branch            main       -> FETCH_HEAD\nFirst, rewinding head to replay your work on top of it..."
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+pull\\s+origin\\s+main$", "hint": "缺少 --rebase，会使用 merge 模式。" }
+    ],
+    "hint": "在 pull 时添加 --rebase，习惯上写成 git pull --rebase origin main。",
+    "explanation": "--rebase 让本地提交线性化，避免额外的 merge commit。"
+  },
+  {
+    "id": "git_diff_staged",
+    "category": "git",
+    "topic": "diff",
+    "difficulty": "medium",
+    "title": "查看暂存区差异",
+    "prompt": "查看已暂存文件与 HEAD 的差异。",
+    "description": "练习对比暂存区和上一次提交。",
+    "tags": ["git", "diff", "staged"],
+    "valid_answers": ["^git\\s+diff\\s+--staged$", "^git\\s+diff\\s+--cached$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+diff\\s+--staged$": "diff --git a/src/main.py b/src/main.py\nindex 1a2b3c..4d5e6f 100644\n--- a/src/main.py\n+++ b/src/main.py\n@@ -1,3 +1,5 @@\n+def greet():\n+    return \"hi\"\n print(\"hello\")",
+      "^git\\s+diff\\s+--cached$": "diff --git a/src/main.py b/src/main.py\nindex 1a2b3c..4d5e6f 100644\n--- a/src/main.py\n+++ b/src/main.py\n@@ -1,3 +1,5 @@\n+def greet():\n+    return \"hi\"\n print(\"hello\")"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+diff\\s*$", "hint": "默认 diff 比较工作区与暂存区，这里要看暂存区与 HEAD，需加 --staged/--cached。" }
+    ],
+    "hint": "使用 git diff --staged（或 --cached）。",
+    "explanation": "--staged/--cached 会比较暂存区与上一提交，帮助检查将要提交的内容。"
+  },
+  {
+    "id": "git_stash_push",
+    "category": "git",
+    "topic": "stash",
+    "difficulty": "medium",
+    "title": "保存当前工作进度",
+    "prompt": "把当前未提交的修改存入暂存栈，并加注释 \"wip ui\"。",
+    "description": "练习把工作区与暂存区改动一起存入 stash，并写入备注。",
+    "tags": ["git", "stash"],
+    "valid_answers": [
+      "^git\\s+stash\\s+push\\s+-m\\s+\"wip\\s+ui\"$",
+      "^git\\s+stash\\s+push\\s+-m\\s+'wip\\s+ui'$",
+      "^git\\s+stash\\s+save\\s+\"wip\\s+ui\"$",
+      "^git\\s+stash\\s+save\\s+'wip\\s+ui'$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+stash\\s+push\\s+-m\\s+\"wip\\s+ui\"$": "Saved working directory and index state WIP on main: abc1234 init project",
+      "^git\\s+stash\\s+push\\s+-m\\s+'wip\\s+ui'$": "Saved working directory and index state WIP on main: abc1234 init project",
+      "^git\\s+stash\\s+save\\s+\"wip\\s+ui\"$": "Saved working directory and index state WIP on main: abc1234 init project",
+      "^git\\s+stash\\s+save\\s+'wip\\s+ui'$": "Saved working directory and index state WIP on main: abc1234 init project"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+stash\\s*$", "hint": "最好为 stash 添加备注，便于识别，需要补充 -m 信息。" }
+    ],
+    "hint": "使用 git stash push -m \"备注\"，旧语法 git stash save 也可以。",
+    "explanation": "stash 会同时保存工作区与暂存区修改，-m 备注方便后续检索。"
+  },
+  {
+    "id": "git_restore_file",
+    "category": "git",
+    "topic": "undo",
+    "difficulty": "medium",
+    "title": "丢弃工作区修改",
+    "prompt": "撤销对 config.yaml 的本地修改，恢复到暂存/HEAD 版本。",
+    "description": "练习将单个文件恢复到最近的提交状态。",
+    "tags": ["git", "restore", "checkout"],
+    "valid_answers": [
+      "^git\\s+restore\\s+config\\.yaml$",
+      "^git\\s+checkout\\s+--\\s+config\\.yaml$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+restore\\s+config\\.yaml$": "",
+      "^git\\s+checkout\\s+--\\s+config\\.yaml$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+reset\\s+--hard", "hint": "reset --hard 太激进，会影响所有文件，这里只需恢复单个文件。" }
+    ],
+    "hint": "现代写法 git restore <文件>，旧写法 git checkout -- <文件>。",
+    "explanation": "restore/checkout 会用暂存区或 HEAD 覆盖工作区的文件内容。"
+  },
+  {
+    "id": "git_reset_soft",
+    "category": "git",
+    "topic": "reset",
+    "difficulty": "hard",
+    "title": "撤销最近一次提交但保留暂存",
+    "prompt": "把 HEAD 回退到上一个提交，但保留改动在暂存区。",
+    "description": "练习 --soft 模式的 reset，用于重新修改提交信息或继续补充。",
+    "tags": ["git", "reset", "soft"],
+    "valid_answers": ["^git\\s+reset\\s+--soft\\s+HEAD~1$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+reset\\s+--soft\\s+HEAD~1$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+reset\\s+--hard\\s+HEAD~1$", "hint": "--hard 会清掉工作区，这里需要保留所有改动。" }
+    ],
+    "hint": "使用 git reset --soft HEAD~1 回退提交指针但保留暂存内容。",
+    "explanation": "--soft 只移动 HEAD 和当前分支指针，索引与工作区不变。"
+  },
+  {
+    "id": "git_revert_commit",
+    "category": "git",
+    "topic": "revert",
+    "difficulty": "hard",
+    "title": "创建反向提交",
+    "prompt": "对提交 abc1234 做一次反向提交以撤销它。",
+    "description": "练习使用 revert 安全地撤销历史提交。",
+    "tags": ["git", "revert"],
+    "valid_answers": [
+      "^git\\s+revert\\s+abc1234$",
+      "^git\\s+revert\\s+abc1234\\^?$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^git\\s+revert\\s+abc1234$": "[main def5678] Revert \"some change\"\n 1 file changed, 2 deletions(-)",
+      "^git\\s+revert\\s+abc1234\\^?$": "[main def5678] Revert \"some change\"\n 1 file changed, 2 deletions(-)"
+    },
+    "anti_patterns": [
+      { "pattern": "^git\\s+reset", "hint": "reset 会移动指针，revert 才是通过新提交撤销指定提交。" }
+    ],
+    "hint": "git revert <提交号> 会生成一个新的反向提交。",
+    "explanation": "revert 保留历史不变，适合在共享分支上撤销错误提交。"
+  }
+]

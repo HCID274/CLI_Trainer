@@ -1,6 +1,6 @@
 # CLI Trainer
 
-一个基于关卡的命令行模拟训练器，支持 Linux / Windows / Docker / Vim 基础指令练习。强调“手速 + 肌肉记忆”刷题体验：连敲命令立即判定，命中即可回显伪终端输出 + 鼓励语。支持自定义上传题库（`--levels` 指定文件或 `index.json` 清单），用正则匹配验证用户输入，不执行真实命令。
+一个基于关卡的命令行模拟训练器，支持 Linux / Windows / Docker / Vim / Git 基础指令练习。强调“手速 + 肌肉记忆”刷题体验：连敲命令立即判定，命中即可回显伪终端输出 + 鼓励语。支持自定义上传题库（`--levels` 指定文件或 `index.json` 清单），用正则匹配验证用户输入，不执行真实命令。
 
 ## 快速开始
 
@@ -12,10 +12,17 @@ cli-trainer --no-color    # 关闭彩色输出
 ```
 
 可选过滤参数：
-- `--category`：`linux_shell` / `windows_cmd` / `docker` / `vim_normal`
+- `--category`：`linux_shell` / `windows_cmd` / `docker` / `vim_normal` / `git`
 - `--difficulty`：`easy` / `medium` / `hard`
 
 退出：任意输入处使用 `exit` / `quit` / `:q` 或 `Ctrl+C`。
+
+内置题库覆盖：
+- Linux：导航、文件/目录、权限、搜索、打包、进程、环境变量
+- Windows CMD：导航、文件/目录、搜索、进程、网络与删除
+- Docker：镜像、容器、构建/拉取/清理、日志、exec
+- Vim（普通模式）：保存/退出、撤销重做、跳转、复制粘贴、替换、可视模式
+- Git：状态、暂存、提交、分支、合并、远程、拉取、diff、stash、撤销
 
 ## 题库格式（自定义上传接口）
 
@@ -25,8 +32,8 @@ cli-trainer --no-color    # 关闭彩色输出
 [
   {
     "id": "linux_ls_basic",
-    "category": "linux_shell",          // linux_shell | windows_cmd | docker | vim_normal
-    "topic": "filesystem",              // 主题/线路：filesystem/process/navigation/image/container 等
+    "category": "linux_shell",          // linux_shell | windows_cmd | docker | vim_normal | git
+    "topic": "filesystem",              // 主题/线路：filesystem/process/navigation/image/container/git/history 等
     "difficulty": "easy",               // easy | medium | hard
     "title": "列出当前目录所有文件",
     "prompt": "请列出当前目录所有文件。",
@@ -34,16 +41,16 @@ cli-trainer --no-color    # 关闭彩色输出
     "tags": ["ls", "filesystem"],
     "valid_answers": ["^ls$", "^ls\\s+-la?$"],   // 正则列表
     "case_sensitive": true,             // 可选；缺省使用全局默认（大小写敏感）
-"anti_patterns": [
-  { "pattern": "^dir$", "hint": "这是 Linux 环境，请使用 ls 而不是 dir。" }
-],
-"outputs": {
-  "^ls$": "README.md\napp.py\ndata\nlogs",
-  "^ls\\s+-la?$": "total 4\n-rw-r--r-- 1 root root 120 README.md\n-rw-r--r-- 1 root root 2048 app.py\ndrwxr-xr-x 2 root root 4096 data\ndrwxr-xr-x 2 root root 4096 logs"
-},
-"hint": "使用 ls 命令列出当前目录内容。",
-"explanation": "ls 会列出当前目录内容，搭配 -l -a 可以查看更多信息。"
-}
+    "anti_patterns": [
+      { "pattern": "^dir$", "hint": "这是 Linux 环境，请使用 ls 而不是 dir。" }
+    ],
+    "outputs": {
+      "^ls$": "README.md\napp.py\ndata\nlogs",
+      "^ls\\s+-la?$": "total 4\n-rw-r--r-- 1 root root 120 README.md\n-rw-r--r-- 1 root root 2048 app.py\ndrwxr-xr-x 2 root root 4096 data\ndrwxr-xr-x 2 root root 4096 logs"
+    },
+    "hint": "使用 ls 命令列出当前目录内容。",
+    "explanation": "ls 会列出当前目录内容，搭配 -l -a 可以查看更多信息。"
+  }
 ]
 ```
 
@@ -62,11 +69,12 @@ cli-trainer --no-color    # 关闭彩色输出
 
 ```
 levels/
-  index.json       # ["linux.json", "windows.json", "docker.json", "vim.json"]
+  index.json       # ["linux.json", "windows.json", "docker.json", "vim.json", "git.json"]
   linux.json
   windows.json
   docker.json
   vim.json
+  git.json
 ```
 
 `index.json` 内容示例：
@@ -76,7 +84,8 @@ levels/
   "linux.json",
   "windows.json",
   "docker.json",
-  "vim.json"
+  "vim.json",
+  "git.json"
 ]
 ```
 

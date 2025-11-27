@@ -7,6 +7,7 @@ DEFAULT_PROMPT_SYMBOLS: Dict[str, str] = {
     "windows_cmd": "C:\\Users\\Admin> ",
     "docker": "root@container:/app# ",
     "vim_normal": "[Vim Normal]: ",
+    "git": "repo(main)$ ",
 }
 
 

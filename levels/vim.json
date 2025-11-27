@@ -1,0 +1,23 @@
+[
+  {
+    "id": "vim_save_quit",
+    "category": "vim_normal",
+    "topic": "basic",
+    "difficulty": "easy",
+    "title": "保存并退出",
+    "prompt": "请使用 Vim 普通模式命令保存并退出。",
+    "description": "假设当前在普通模式，保存文件并退出。",
+    "tags": ["vim", "write", "quit"],
+    "valid_answers": ["^:wq$", "^ZZ$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^:wq$": "写入完成，文件已保存并退出。",
+      "^ZZ$": "写入完成，文件已保存并退出。"
+    },
+    "anti_patterns": [
+      { "pattern": "^:q!$", "hint": ":q! 是不保存退出，这里需要保存。" }
+    ],
+    "hint": "写入并退出的常用组合是 :wq。",
+    "explanation": ":wq 写入文件并退出，ZZ 也可以达到同样效果。"
+  }
+]

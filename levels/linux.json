@@ -1,0 +1,41 @@
+[
+  {
+    "id": "linux_ls_basic",
+    "category": "linux_shell",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "列出当前目录所有文件",
+    "prompt": "请列出当前目录所有文件。",
+    "description": "练习查看当前目录内容。",
+    "tags": ["ls", "filesystem"],
+    "valid_answers": ["^ls$", "^ls\\s+-la?$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^ls$": "README.md\napp.py\ndata\nlogs",
+      "^ls\\s+-la?$": "total 4\n-rw-r--r-- 1 root root 120 README.md\n-rw-r--r-- 1 root root 2048 app.py\ndrwxr-xr-x 2 root root 4096 data\ndrwxr-xr-x 2 root root 4096 logs"
+    },
+    "anti_patterns": [
+      { "pattern": "^dir$", "hint": "这是 Linux 环境，请使用 ls 而不是 dir。" }
+    ],
+    "hint": "使用 ls 命令列出当前目录内容。",
+    "explanation": "ls 会列出当前目录内容，搭配 -l -a 可以查看更多信息。"
+  },
+  {
+    "id": "linux_pwd",
+    "category": "linux_shell",
+    "topic": "navigation",
+    "difficulty": "easy",
+    "title": "查看当前路径",
+    "prompt": "请显示当前工作目录的完整路径。",
+    "description": "练习查看当前工作目录路径。",
+    "tags": ["pwd", "navigation"],
+    "valid_answers": ["^pwd$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^pwd$": "/home/student/projects/demo"
+    },
+    "anti_patterns": [],
+    "hint": "pwd 可以显示当前工作目录。",
+    "explanation": "pwd 会打印当前工作目录的绝对路径。"
+  }
+]

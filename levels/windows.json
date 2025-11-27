@@ -1,0 +1,23 @@
+[
+  {
+    "id": "windows_dir",
+    "category": "windows_cmd",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "查看当前目录文件",
+    "prompt": "在 Windows CMD 中列出当前目录的文件。",
+    "description": "练习在 Windows CMD 中列出当前目录内容。",
+    "tags": ["dir", "filesystem"],
+    "valid_answers": ["^dir$", "^dir\\s+/b$"],
+    "case_sensitive": false,
+    "outputs": {
+      "^dir$": " 驱动器 C 中的卷是 OS\n 卷的序列号是 1234-ABCD\n\n C:\\Users\\Admin 的目录\n\n2024/06/01  10:00    <DIR>          .\n2024/06/01  10:00    <DIR>          ..\n2024/06/01  10:00               120 README.md\n2024/06/01  10:00             2,048 app.py\n2024/06/01  10:00    <DIR>          data\n2024/06/01  10:00    <DIR>          logs\n               2 个文件          2,168 字节\n               4 个目录  100,000,000,000 可用字节",
+      "^dir\\s+/b$": "README.md\napp.py\ndata\nlogs"
+    },
+    "anti_patterns": [
+      { "pattern": "^ls$", "hint": "这是 Windows 环境，请使用 dir。" }
+    ],
+    "hint": "dir 命令用于查看目录内容。",
+    "explanation": "dir 会列出当前目录文件，/b 显示简洁列表。"
+  }
+]

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cli-trainer"
+version = "0.1.0"
+description = "A level-based CLI trainer for Linux, Windows, Docker, and Vim commands."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "CLI Trainer", email = "cli-trainer@example.com" }
+]
+dependencies = []
+
+[project.scripts]
+cli-trainer = "cli_trainer.main:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["cli_trainer"]

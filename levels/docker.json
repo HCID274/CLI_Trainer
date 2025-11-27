@@ -1,0 +1,23 @@
+[
+  {
+    "id": "docker_list_images",
+    "category": "docker",
+    "topic": "image",
+    "difficulty": "easy",
+    "title": "列出本地镜像",
+    "prompt": "请查看本地所有 Docker 镜像。",
+    "description": "练习查看本地 Docker 镜像列表。",
+    "tags": ["docker", "images"],
+    "valid_answers": ["^docker\\s+images$", "^docker\\s+image\\s+ls$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^docker\\s+images$": "REPOSITORY   TAG       IMAGE ID       CREATED      SIZE\ndemo-app     latest    a1b2c3d4e5f6   2 days ago   230MB\nubuntu       22.04     9876543210ab   3 weeks ago  72MB",
+      "^docker\\s+image\\s+ls$": "REPOSITORY   TAG       IMAGE ID       CREATED      SIZE\ndemo-app     latest    a1b2c3d4e5f6   2 days ago   230MB\nubuntu       22.04     9876543210ab   3 weeks ago  72MB"
+    },
+    "anti_patterns": [
+      { "pattern": "^docker\\s+ps$", "hint": "docker ps 列出容器，这里需要镜像列表。" }
+    ],
+    "hint": "docker images 可以查看本地镜像。",
+    "explanation": "docker images 会显示镜像仓库、标签、ID 等信息。"
+  }
+]

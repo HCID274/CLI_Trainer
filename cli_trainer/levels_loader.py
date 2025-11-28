@@ -4,6 +4,8 @@ from typing import List, Optional, Set, Tuple
 
 from .models import Level
 
+BUNDLED_INDEX = Path(__file__).resolve().parent / "bundled_levels" / "index.json"
+
 
 def _candidate_paths(override: Optional[str]) -> List[Path]:
     """Candidate paths in priority order."""
@@ -22,6 +24,7 @@ def _candidate_paths(override: Optional[str]) -> List[Path]:
     add(Path("index.json"))
     add(Path("levels/index.json"))
     add(Path("levels.json"))
+    add(BUNDLED_INDEX)
     return candidates
 
 

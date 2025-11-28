@@ -1,4 +1,7 @@
+import json
 import re
+from datetime import datetime
+from pathlib import Path
 from typing import List, Optional, Sequence
 
 from .config import Config
@@ -30,6 +33,35 @@ DIFFICULTY_LABELS = {
 
 EXIT_COMMANDS = {"exit", "quit", ":q"}
 SPECIAL_COMMANDS = {"hint", "explain", "answer"}
+STATE_PATH = Path("cli_trainer") / "state.json"
+
+
+def _load_progress_state(state_path: Path, config: Config) -> Optional[str]:
+    try:
+        with state_path.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        return None
+    except json.JSONDecodeError:
+        print_error("进度文件损坏，已忽略", config)
+        return None
+    except OSError:
+        return None
+
+    level_id = data.get("level_id") if isinstance(data, dict) else None
+    if isinstance(level_id, str) and level_id.strip():
+        return level_id.strip()
+    return None
+
+
+def _save_progress_state(state_path: Path, level_id: str, config: Config) -> None:
+    payload = {"level_id": level_id, "updated_at": datetime.utcnow().isoformat() + "Z"}
+    try:
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        with state_path.open("w", encoding="utf-8") as file:
+            json.dump(payload, file, ensure_ascii=False, indent=2)
+    except OSError:
+        print_error("无法写入进度文件，继续训练但不会保存进度。", config)
 
 
 def _select_from_list(title: str, options: Sequence[str], allow_all: bool = False) -> Optional[str]:
@@ -137,14 +169,18 @@ def _play_level(level: Level, config: Config) -> bool:
     prompt = render_prompt(level, config)
 
     while True:
-        user_input = input(prompt).rstrip("\n")
+        try:
+            user_input = input(prompt).rstrip("\n")
+        except KeyboardInterrupt:
+            return False
+
         if user_input in EXIT_COMMANDS:
             return False
         if user_input == "hint":
-            print_info(level.hint or "暂无提示。", config)
+            print_info(level.hint or "????", config)
             continue
         if user_input == "explain":
-            print_info(level.explanation or "暂无解析。", config)
+            print_info(level.explanation or "????", config)
             continue
         if user_input == "answer":
             _show_answers(level, config)
@@ -155,8 +191,8 @@ def _play_level(level: Level, config: Config) -> bool:
             _print_fake_output(level, user_input, result.get("matched_pattern"), config)
             print_success(random_success_message(), config)
             if level.explanation:
-                print_info(f"解析：{level.explanation}", config)
-            proceed = input("按回车进入下一关，或输入 exit 退出: ").strip()
+                print_info(f"???{level.explanation}", config)
+            proceed = input("???????????? exit ??: ").strip()
             if proceed in EXIT_COMMANDS:
                 return False
             return True
@@ -164,7 +200,24 @@ def _play_level(level: Level, config: Config) -> bool:
         if result["anti"] and result["hint"]:
             print_error(result["hint"], config)
         else:
-            print_error("命令不正确或不符合本题要求。", config)
+            print_error("?????????????", config)
+
+
+def _resolve_start_index(levels: List[Level], state_path: Path, config: Config) -> int:
+    saved_level_id = _load_progress_state(state_path, config)
+    if not saved_level_id:
+        return 0
+
+    try:
+        saved_index = next(idx for idx, lvl in enumerate(levels) if lvl.id == saved_level_id)
+    except StopIteration:
+        print_info("已保存的关卡在当前题库中不存在，已从头开始。", config)
+        return 0
+
+    answer = input("检测到上次练习记录，是否从上次位置继续？(回车默认是，输入 n 跳过): ").strip().lower()
+    if answer in {"n", "no"}:
+        return 0
+    return saved_index
 
 
 def run(
@@ -189,8 +242,13 @@ def run(
             return
 
     clear_screen()
-    for level in levels:
+    start_index = _resolve_start_index(levels, STATE_PATH, config)
+
+    for level in levels[start_index:]:
+        _save_progress_state(STATE_PATH, level.id, config)
         should_continue = _play_level(level, config)
+        # ???????????????
+        _save_progress_state(STATE_PATH, level.id, config)
         if not should_continue:
             print_info("训练已结束，欢迎下次再来。", config)
             break

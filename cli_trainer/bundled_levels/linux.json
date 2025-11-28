@@ -1,0 +1,267 @@
+[
+  {
+    "id": "linux_ls_basic",
+    "category": "linux_shell",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "列出当前目录所有文件",
+    "prompt": "请列出当前目录所有文件。",
+    "description": "练习查看当前目录内容。",
+    "tags": ["ls", "filesystem"],
+    "valid_answers": ["^ls$", "^ls\\s+-la?$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^ls$": "README.md\napp.py\ndata\nlogs",
+      "^ls\\s+-la?$": "total 4\n-rw-r--r-- 1 root root 120 README.md\n-rw-r--r-- 1 root root 2048 app.py\ndrwxr-xr-x 2 root root 4096 data\ndrwxr-xr-x 2 root root 4096 logs"
+    },
+    "anti_patterns": [
+      { "pattern": "^dir$", "hint": "这是 Linux 环境，请使用 ls 而不是 dir。" }
+    ],
+    "hint": "使用 ls 命令列出当前目录内容。",
+    "explanation": "ls 会列出当前目录内容，搭配 -l -a 可以查看更多信息。"
+  },
+  {
+    "id": "linux_pwd",
+    "category": "linux_shell",
+    "topic": "navigation",
+    "difficulty": "easy",
+    "title": "查看当前路径",
+    "prompt": "请显示当前工作目录的完整路径。",
+    "description": "练习查看当前工作目录路径。",
+    "tags": ["pwd", "navigation"],
+    "valid_answers": ["^pwd$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^pwd$": "/home/student/projects/demo"
+    },
+    "anti_patterns": [],
+    "hint": "pwd 可以显示当前工作目录。",
+    "explanation": "pwd 会打印当前工作目录的绝对路径。"
+  },
+  {
+    "id": "linux_cd_home",
+    "category": "linux_shell",
+    "topic": "navigation",
+    "difficulty": "easy",
+    "title": "回到家目录",
+    "prompt": "返回当前用户的家目录。",
+    "description": "练习快速回到家目录。",
+    "tags": ["cd", "home"],
+    "valid_answers": ["^cd\\s*~?$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^cd\\s*~?$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^pwd$", "hint": "题目需要切换目录，而不是显示路径。" }
+    ],
+    "hint": "直接输入 cd 或 cd ~ 都可以回到家目录。",
+    "explanation": "cd 没有参数时默认切换到家目录，等价于 cd ~。"
+  },
+  {
+    "id": "linux_mkdir_p",
+    "category": "linux_shell",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "创建嵌套目录",
+    "prompt": "创建目录 logs/2024/06（中间路径不存在时也要创建）。",
+    "description": "练习创建多级目录，缺失的父级需自动创建。",
+    "tags": ["mkdir", "filesystem"],
+    "valid_answers": ["^mkdir\\s+-p\\s+logs/2024/06$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^mkdir\\s+-p\\s+logs/2024/06$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^mkdir\\s+logs$", "hint": "只创建顶层 logs 不够，需要包含 2024/06 且中间目录不存在时也要创建。" }
+    ],
+    "hint": "用 mkdir -p 可以一次性创建多级目录。",
+    "explanation": "-p 选项会在缺失时自动创建父级目录。"
+  },
+  {
+    "id": "linux_touch_file",
+    "category": "linux_shell",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "新建空文件",
+    "prompt": "新建一个空的 notes.txt 文件（或刷新其时间戳）。",
+    "description": "练习创建空文件或刷新修改时间。",
+    "tags": ["touch", "file"],
+    "valid_answers": ["^touch\\s+notes\\.txt$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^touch\\s+notes\\.txt$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^echo\\s+.*>\\s*notes\\.txt$", "hint": "可以用 echo 重定向，但这里练习 touch 更简单。" }
+    ],
+    "hint": "touch notes.txt。",
+    "explanation": "touch 在文件不存在时创建空文件，存在时更新时间戳。"
+  },
+  {
+    "id": "linux_cat_file",
+    "category": "linux_shell",
+    "topic": "filesystem",
+    "difficulty": "easy",
+    "title": "查看文件内容",
+    "prompt": "查看 README.md 的内容。",
+    "description": "练习查看完整文件内容。",
+    "tags": ["cat", "read"],
+    "valid_answers": ["^cat\\s+README\\.md$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^cat\\s+README\\.md$": "# 项目说明\n这是示例项目的 README 内容。"
+    },
+    "anti_patterns": [
+      { "pattern": "^head\\b", "hint": "head 只显示开头几行，这里需要完整查看。" }
+    ],
+    "hint": "cat README.md。",
+    "explanation": "cat 会把文件内容写到标准输出。"
+  },
+  {
+    "id": "linux_tail_logs",
+    "category": "linux_shell",
+    "topic": "logs",
+    "difficulty": "medium",
+    "title": "查看日志尾部",
+    "prompt": "查看 app.log 的最后 5 行。",
+    "description": "练习按行数查看日志尾部。",
+    "tags": ["tail", "logs"],
+    "valid_answers": ["^tail\\s+-n\\s+5\\s+app\\.log$", "^tail\\s+-5\\s+app\\.log$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^tail\\s+-n\\s+5\\s+app\\.log$": "line 16\nline 17\nline 18\nline 19\nline 20",
+      "^tail\\s+-5\\s+app\\.log$": "line 16\nline 17\nline 18\nline 19\nline 20"
+    },
+    "anti_patterns": [
+      { "pattern": "^tail\\s+app\\.log$", "hint": "默认显示 10 行，这里要求 5 行，补充 -n 5。" }
+    ],
+    "hint": "tail -n 5 app.log。",
+    "explanation": "tail -n 指定需要的行数，常用于查看日志尾部。"
+  },
+  {
+    "id": "linux_grep_error",
+    "category": "linux_shell",
+    "topic": "search",
+    "difficulty": "medium",
+    "title": "查找包含关键字的行",
+    "prompt": "在 app.log 中查找包含 ERROR 的行并显示行号。",
+    "description": "练习按关键字搜索并显示行号。",
+    "tags": ["grep", "search"],
+    "valid_answers": ["^grep\\s+-n\\s+ERROR\\s+app\\.log$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^grep\\s+-n\\s+ERROR\\s+app\\.log$": "12:ERROR failed to connect\n45:ERROR timeout when calling service"
+    },
+    "anti_patterns": [
+      { "pattern": "^grep\\s+ERROR\\s+app\\.log$", "hint": "补充 -n 以显示行号，便于定位。" }
+    ],
+    "hint": "grep -n 关键字 文件名。",
+    "explanation": "-n 让输出带上行号，便于跳转。"
+  },
+  {
+    "id": "linux_find_py",
+    "category": "linux_shell",
+    "topic": "search",
+    "difficulty": "medium",
+    "title": "递归查找 Python 文件",
+    "prompt": "在 src 目录下查找所有 .py 文件。",
+    "description": "练习递归查找指定后缀的文件。",
+    "tags": ["find", "search"],
+    "valid_answers": [
+      "^find\\s+src\\s+-name\\s+'\\*\\.py'$",
+      "^find\\s+src\\s+-name\\s+\"\\*\\.py\"$"
+    ],
+    "case_sensitive": true,
+    "outputs": {
+      "^find\\s+src\\s+-name\\s+'\\*\\.py'$": "src/main.py\nsrc/utils/helpers.py",
+      "^find\\s+src\\s+-name\\s+\"\\*\\.py\"$": "src/main.py\nsrc/utils/helpers.py"
+    },
+    "anti_patterns": [
+      { "pattern": "^ls\\s+src$", "hint": "ls 只看当前层，不能递归匹配后缀，使用 find。" }
+    ],
+    "hint": "find src -name \"*.py\"。",
+    "explanation": "find 能递归目录并按模式匹配文件名。"
+  },
+  {
+    "id": "linux_chmod_exec",
+    "category": "linux_shell",
+    "topic": "permissions",
+    "difficulty": "medium",
+    "title": "赋予可执行权限",
+    "prompt": "让 deploy.sh 变成可执行文件。",
+    "description": "练习为脚本添加执行权限。",
+    "tags": ["chmod", "permissions"],
+    "valid_answers": ["^chmod\\s+\\+x\\s+deploy\\.sh$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^chmod\\s+\\+x\\s+deploy\\.sh$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^chmod\\s+777\\s+deploy\\.sh$", "hint": "不需要 777，这里只需添加执行权限即可。" }
+    ],
+    "hint": "chmod +x deploy.sh。",
+    "explanation": "+x 会在现有权限基础上添加执行权限。"
+  },
+  {
+    "id": "linux_tar_extract",
+    "category": "linux_shell",
+    "topic": "archive",
+    "difficulty": "hard",
+    "title": "解压 tar.gz 包",
+    "prompt": "解压 backup.tar.gz 到当前目录。",
+    "description": "练习解压 tar.gz 压缩包。",
+    "tags": ["tar", "archive"],
+    "valid_answers": ["^tar\\s+-xzf\\s+backup\\.tar\\.gz$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^tar\\s+-xzf\\s+backup\\.tar\\.gz$": "x config.yaml\nx data/\nx data/users.csv"
+    },
+    "anti_patterns": [
+      { "pattern": "^tar\\s+-czf", "hint": "-czf 是打包压缩，这里需要解压用 -xzf。" }
+    ],
+    "hint": "tar -xzf backup.tar.gz。",
+    "explanation": "-x 解压，-z 处理 gzip，-f 指定文件名。"
+  },
+  {
+    "id": "linux_kill_process",
+    "category": "linux_shell",
+    "topic": "process",
+    "difficulty": "hard",
+    "title": "终止指定进程",
+    "prompt": "结束 PID 为 4321 的进程。",
+    "description": "练习按 PID 结束进程。",
+    "tags": ["kill", "process"],
+    "valid_answers": ["^kill\\s+-9\\s+4321$", "^kill\\s+4321$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^kill\\s+-9\\s+4321$": "",
+      "^kill\\s+4321$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^pkill\\b", "hint": "题目已给出 PID，用 kill 即可。" }
+    ],
+    "hint": "kill 4321，如需强制可加 -9。",
+    "explanation": "kill 默认发送 TERM，-9 为 SIGKILL 强制终止。"
+  },
+  {
+    "id": "linux_export_env",
+    "category": "linux_shell",
+    "topic": "environment",
+    "difficulty": "easy",
+    "title": "设置环境变量",
+    "prompt": "将环境变量 ENV 设置为 prod。",
+    "description": "练习导出环境变量供子进程使用。",
+    "tags": ["export", "env"],
+    "valid_answers": ["^export\\s+ENV=prod$"],
+    "case_sensitive": true,
+    "outputs": {
+      "^export\\s+ENV=prod$": ""
+    },
+    "anti_patterns": [
+      { "pattern": "^ENV=prod$", "hint": "仅设置 shell 变量不会导出，需要 export。" }
+    ],
+    "hint": "export ENV=prod。",
+    "explanation": "export 会把变量放入环境中，使子进程可见。"
+  }
+]

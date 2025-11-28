@@ -20,3 +20,7 @@ cli-trainer = "cli_trainer.main:main"
 [tool.setuptools]
 package-dir = {"" = "."}
 packages = ["cli_trainer"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+cli_trainer = ["bundled_levels/*.json"]
